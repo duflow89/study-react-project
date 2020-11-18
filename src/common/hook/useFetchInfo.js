@@ -9,7 +9,7 @@ export default function useFetchInfo(actionType, fetchKey) {
     [FETCH_KEY]: fetchKey,
   });
   return useSelector(
-    state => ({
+    (state) => ({
       fetchStatus:
         state.common.fetchInfo.fetchStatusMap[actionType]?.[_fetchKey],
       isFetching:
@@ -28,6 +28,6 @@ export default function useFetchInfo(actionType, fetchKey) {
       errorMessage:
         state.common.fetchInfo.errorMessageMap[actionType]?.[_fetchKey],
     }),
-    shallowEqual,
+    shallowEqual
   );
 }
