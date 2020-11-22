@@ -8,6 +8,7 @@ import {
 export const Types = {
   SetValue: 'search/SetValue',
   FetchAutoComplete: 'search/FetchAutoComplete',
+  FetchAllHistory: 'search/FetchAllHistory',
 };
 
 export const actions = {
@@ -16,11 +17,13 @@ export const actions = {
     type: Types.FetchAutoComplete,
     keyword,
   }),
+  fetchAllHistory: () => ({ type: Types.FetchAllHistory }),
 };
 
 const INITIAL_STATE = {
   keyword: '',
   autoCompletes: [],
+  history: [],
 };
 
 const reducer = createReducer(INITIAL_STATE, {

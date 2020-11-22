@@ -1,13 +1,5 @@
 import React, { useEffect } from 'react';
-import {
-  Row,
-  Col,
-  PageHeader,
-  Descriptions,
-  Typography,
-  Space,
-  Spin,
-} from 'antd';
+import { Row, Col, PageHeader, Descriptions, Typography } from 'antd';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { actions, Types } from '../state';
@@ -15,6 +7,7 @@ import useFetchInfo from '../../common/hook/useFetchInfo';
 import Department from './Department';
 import TagList from './TagList';
 import History from '../../common/component/History';
+import FetchLabel from '../component/FetchLabel';
 
 /**
  *
@@ -24,12 +17,13 @@ import History from '../../common/component/History';
 export default function User({ match }) {
   const history = useHistory();
   const dispatch = useDispatch();
-  // @ts-ignore
   const user = useSelector((state) => state.user.user);
+  const userHistory = useSelector(state => state.user.userHistory);
 
   const name = match.params.name;
   useEffect(() => {
     dispatch(actions.fetchUser(name));
+    dispatch(actions.fetchUserHistory(name));
   }, [dispatch, name]);
 
   const { isFetched, isSlow } = useFetchInfo(Types.FetchUser);
@@ -40,21 +34,39 @@ export default function User({ match }) {
         <Col xs={24} md={20} lg={14}>
           <PageHeader
             onBack={history.goBack}
-            title={<Space>사용자 정보 {isSlow && <Spin size='small' />}</Space>}
+            title={
+              <FetchLabel label='사용자 정보' actionType={Types.FetchUser} />
+            }
           >
             {user && (
               <Descriptions layout='vertical' bordered column={1}>
                 <Descriptions.Item label='이름'>
                   <Typography.Text>{user.name}</Typography.Text>
                 </Descriptions.Item>
-                <Descriptions.Item label='소속'>
+                <Descriptions.Item
+                  label={
+                    <FetchLabel
+                      label='사용자 정보'
+                      actionType={Types.FetchUpdateUser}
+                      fetchKey='department'
+                    />
+                  }
+                >
                   <Department />
                 </Descriptions.Item>
-                <Descriptions.Item label='태그'>
+                <Descriptions.Item
+                  label={
+                    <FetchLabel
+                      label='태그'
+                      actionType={Types.FetchUpdateUser}
+                      fetchKey='tag'
+                    />
+                  }
+                >
                   <TagList />
                 </Descriptions.Item>
                 <Descriptions.Item label='수정 내역'>
-                  <History/>
+                  <History items={userHistory}/>
                 </Descriptions.Item>
               </Descriptions>
             )}
