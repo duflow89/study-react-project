@@ -66,7 +66,11 @@ export default function User({ match }) {
                   <TagList />
                 </Descriptions.Item>
                 <Descriptions.Item label='수정 내역'>
+<<<<<<< HEAD
                   <History items={userHistory}/>
+=======
+                  <History />
+>>>>>>> master
                 </Descriptions.Item>
               </Descriptions>
             )}
